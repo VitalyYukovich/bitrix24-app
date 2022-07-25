@@ -1,0 +1,2 @@
+bitrix_rest:
+    webhook_url: "%env(WEBHOOK_URL)%"

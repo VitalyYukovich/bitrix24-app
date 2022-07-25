@@ -1,0 +1,37 @@
+
+<table class="table table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Дата пожертвования</th>
+            <th>Количество инитных регулярный пожертвований</th>
+            <th>Количество повторных регулярный пожертвований</th>
+            <th>Всего инитных и повторных регулярный пожертвований</th>
+            <th>Количество разовых пожертвований</th>
+            <th>Попытка сделать регулярное или разовое пожертвование</th>
+            <th>Сумма регулярных пожертвований</th>
+            <th>Сумма зазовых пожертвований</th>
+            <th>Итого сумма пожертвований за период</th>
+            <th>Среднее пожертвование регулярное</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+            <tr 
+                {% if row.LABEL == 'Итого' %}
+                    class="tableFixLastRow"
+                {% endif %}
+            >
+                <td>{{ row.LABEL }}</td>
+                <td>{{ row.COUNT_INIT_REGULAR }}</td>
+                <td>{{ row.COUNT_REPEAT_REGULAR }}</td>
+                <td>{{ row.COUNT_REGULAR }}</td>
+                <td>{{ row.COUNT_SINGLE }}</td>
+                <td>{{ row.COUNT_ATTEMPT }}</td>
+                <td>{{ row.SUM_REGULAR }}</td>
+                <td>{{ row.SUM_SINGLE }}</td>
+                <td>{{ row.SUM_COMMON }}</td>
+                <td>{{ row.AVG_REGULAR }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
