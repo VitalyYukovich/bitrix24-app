@@ -10,10 +10,8 @@
     </head>
     <body class="m-4">
         <div class="container">
-            <form>
-                <p>Дата начала: от <input type='text' name='start'> до <input type='text' name='end'></p>
-                <p>Тип пожертвования:<input type='text' name='type'></p>
-            </form>
+            <button class="btn btn-secondary full-width" onclick="tableToExcel('table', 'Donation table')">Экспорт в Excel</button>
+            {{ include('app/filter.html.twig') }}
             
             <div class="table-responsiv tableFixHead" id="table-data">
                 {{ include('app/table.html.twig') }}

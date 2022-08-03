@@ -29,6 +29,7 @@ class AppService
             'OPPORTUNITY',
             'UF_CRM_1642597942',
             'UF_CRM_1642597927',
+	        'UF_CRM_1642591052', // type donations
         ];
 
         $this->order = [
@@ -71,10 +72,11 @@ class AppService
     public function getData(Request $request): Array
     {        
         $this->getDealListAll($request);
-        $this->formatingDealList();     
-        $data = $this->processingDealList();
-        
-        return ['data' => $data, 'errors' => $this->errors];
+        $this->formatingDealList();
+	    $data = $this->processingDealList();
+	    $filterData = $this->getFilterData();
+
+        return ['data' => $data, 'filterData' => $filterData,'errors' => $this->errors];
     }
 
     public function processingDealList(){
@@ -204,6 +206,31 @@ class AppService
 
     }
 
+	public function getFilterData(): Array
+	{
+		$result = [];
+		foreach($this->dealList as $deal) {
+			$explodeDate = explode('-', $deal['DATE_CREATE']);
+			$result['YEAR'][$explodeDate[0]] = $explodeDate[0];
+
+			if($deal['UF_CRM_1642591052']) {
+				$result['TYPE'][$deal['UF_CRM_1642591052']] = $deal['UF_CRM_1642591052'];
+			}
+		}
+		return $result;
+	}
+
+	public function getYearList(): Array
+	{
+		$result = [];
+		foreach($this->dealList as $deal) {
+			echo "<pre>"; print_r($deal); echo "</pre>";
+			$explodeDate = explode('-', $deal['DATE_CREATE']);
+			$result[$explodeDate[0]] = $explodeDate[0];
+		}
+		return array_values($result);
+	}
+
     public function getDealListBatchQuery($start, $end)
     {
         foreach(range($start, $end) as $i){
@@ -220,33 +247,51 @@ class AppService
 
     public function initFilter(Request $request)
     {
-        $start = '';
-        $end = '';
 
-        if($request->get('start')){
-            try{
-                $start = (new \DateTime($request->get('start')))->format('Y-m-d');
-            }catch (\Exception $e){
-                $this->errors[] = 'Неверный формат даты начала';
-            }
-        }
-        if($request->get('end')){
-            try{
-                $end = (new \DateTime($request->get('end')))->add(new \DateInterval("P1D"))->format('Y-m-d');
-            }catch (\Exception $e){
-                $this->errors[] = 'Неверный формат даты завержения';
-            }
+	    $from = '';
+        $to = '';
+
+        if($request->get('from') || $request->get('to')) {
+
+	        if($request->get('from')) {
+		        $from = (new \DateTime($request->get('from')))->format('Y-m-d');
+	        }
+	        if($request->get('to')) {
+		        try{
+		            $to = (new \DateTime($request->get('to')))->add(new \DateInterval("P1D"))->format('Y-m-d');
+	            }catch (\Exception $e){
+	                $this->errors[] = 'Неверный формат даты завержения';
+	            }
+	        }
+
+        } elseif($request->get('month')) {
+
+	        $monthDate = new \DateTime('2022-' . $request->get('month') . '-01 00:00:00');
+	        $from = $monthDate->format('Y-m-d');
+	        $to = $monthDate->format('Y-m-t'); // 't' is last day of month
+
+        } elseif($request->get('exact-date')) {
+
+	        $from = (new \DateTime($request->get('exact-date')))->format('Y-m-d 00:00:00');
+	        $to = (new \DateTime($request->get('exact-date')))->format('Y-m-d 23:59:00');
+
+        } elseif($request->get('year')) {
+
+	        $yearDate = new \DateTime($request->get('year').'-01-01 00:00:00');
+	        $from = $yearDate->format('Y-m-d');
+	        $to = $yearDate->format('Y-12-t'); // 't' is last day of month
+
         }
 
-        if($start > $end && !empty($start) && !empty($end)){
+        if($from > $to && !empty($from) && !empty($to)){
             $this->errors[] = 'Дата завершения меньше даты старта';
         }else{
-            if(!empty($start)){
-                $this->params['filter'] += ['>DATE_CREATE' => $start];
+            if(!empty($from)){
+                $this->params['filter'] += ['>DATE_CREATE' => $from];
             }
 
-            if(!empty($end)){
-                $this->params['filter'] += ['<DATE_CREATE' => $end];
+            if(!empty($to)){
+                $this->params['filter'] += ['<DATE_CREATE' => $to];
             }
         }
 

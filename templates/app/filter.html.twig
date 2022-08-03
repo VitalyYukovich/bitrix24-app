@@ -1,0 +1,86 @@
+<div class="donation-filter-wrapper flex-col">
+
+    <form id="donation-filter-form" class="full-width flex-col">
+
+        <div class="dontation-filter-row full-width flex-col">
+            <label>Дата создания</label>
+            <div class="flex-row full-width">
+
+                <select class="donation-filter-select form-select" aria-label="Default select example" id="donation-filter-content-select" value="donation-filter-range">
+                    <option value="range">Диапазон</option>
+                    <option value="exact-date">Точная дата</option>
+                    <option value="full-time">За все время</option>
+                    <option value="month">За месяц</option>
+                    <option value="year">За год</option>
+                </select>
+
+
+                <div class="donation-filter-content full-width">
+                    <div class="range donation-filter-item flex-row filter-visible">
+                        <input type="date" class="form-control" name="from">
+                        <span class="input-group-text">-</span>
+                        <input type="date" class="form-control" name="to">
+                    </div>
+
+                    <div class="exact-date donation-filter-item flex-row full-width filter-hidden">
+                        <input type="date" class="form-control full-width" name="exact-date">
+                    </div>
+
+                    <div class="full-time donation-filter-item full-width filter-hidden">
+                        <span class="input-group-text full-width full-height">За все время</span>
+                    </div>
+
+                    <div class="month donation-filter-item full-width filter-hidden">
+                        <select class="donation-filter-select form-select full-height full-width" aria-label="Default select example" name="month">
+                            <option value="1">Январь</option>
+                            <option value="2">Февраль</option>
+                            <option value="3">Март</option>
+                            <option value="4">Апрель</option>
+                            <option value="5">Май</option>
+                            <option value="6">Июнь</option>
+                            <option value="7">Июль</option>
+                            <option value="8">Август</option>
+                            <option value="9">Сентябрь</option>
+                            <option value="10">Октябрь</option>
+                            <option value="11">Ноябрь</option>
+                            <option value="12">Декабрь</option>
+                        </select>
+                    </div>
+
+                    <div class="year donation-filter-item full-width filter-hidden">
+                        <select class="donation-filter-select form-select full-height full-width" aria-label="Default select example" name="year">
+                            {% for year in filterData.YEAR %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="dontation-filter-row full-width flex-col">
+            <label>Тип пожертвования</label>
+        </div>
+
+        <div class="donation-filter-item type">
+            <select class="dontation-filter-donation-type form-select full-width" name="type">
+                <option value="">Все</option>
+                {% for type in filterData.TYPE %}
+                    <option value="{{ type }}">{{ type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </form>
+    <div class="donation-filter-buttons flex-row full-width">
+        <button type="button" class="btn btn-primary full-width" id="donation-filter-form-submit">
+            Применить
+        </button>
+        <button type="button" class="btn btn-secondary full-width" id="donation-filter-form-reset">
+            Сбросить
+        </button>
+    </div>
+
+</div>

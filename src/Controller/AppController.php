@@ -16,7 +16,7 @@ class AppController extends AbstractController
     public function index(Request $request, AppService $appService): Response
     {   
         $data = $appService->getData($request);
-        return $this->render('app/index.html.twig', $data); 
+        return $this->render('app/index.html.twig', $data);
     }
 
     #[Route('/ajax', name: 'app_ajax')]

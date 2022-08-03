@@ -22,3 +22,82 @@ td {
     background: #ffffff;
     font-weight: 700;
 }
+
+.donation-filter-wrapper {
+    width: 600px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.dontation-filter-row {
+    gap: 5px;
+}
+
+.donation-filter-select {
+    width: 200px;
+    margin-right: 10px;
+}
+
+.donation-filter-content {
+    height: 50px;
+    gap: 20px
+}
+
+#donation-filter-form {
+    gap: 10px;
+}
+
+.donation-filter-range {
+    width: 100%;
+    gap: 10px;
+}
+
+.donation-filter-range input {
+    width: 44%;
+}
+
+.donation-filter-item {
+    justify-content: space-between;
+}
+
+.donation-filter-buttons {
+    gap: 10px;
+    justify-content: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-hidden {
+    display: none;
+}
+
+.filter-visible {
+    height: 100%;
+}
+
+.form-control {
+    display: flex;
+}
+
+#dontaion-filter-form {
+    margin: 0;
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
